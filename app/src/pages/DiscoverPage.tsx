@@ -32,7 +32,7 @@ export const DiscoverPage = () => {
   const [format,      setFormat]      = useState<string | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
-  const debounceRef = useRef<ReturnType<typeof setTimeout>>();
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   useEffect(() => {
     clearTimeout(debounceRef.current as ReturnType<typeof setTimeout>);
     debounceRef.current = setTimeout(() => setSearch(input), 500);
