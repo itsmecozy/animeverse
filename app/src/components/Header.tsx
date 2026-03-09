@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Search, Menu, X } from 'lucide-react';
+import { Search, Menu, X, Sun, Moon } from 'lucide-react';
 import { currentUser } from '@/data/mockData';
 
 interface HeaderProps {
@@ -8,54 +8,72 @@ interface HeaderProps {
 }
 
 export const Header = ({ onNavigate, currentSection }: HeaderProps) => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled]       = useState(false);
+  const [isMobileMenuOpen, setMobileMenu] = useState(false);
+  const [isDark, setIsDark]               = useState(false);
+
+  // Persist theme preference
+  useEffect(() => {
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const dark = saved ? saved === 'dark' : prefersDark;
+    setIsDark(dark);
+    document.documentElement.classList.toggle('dark', dark);
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !isDark;
+    setIsDark(next);
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem('theme', next ? 'dark' : 'light');
+  };
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setIsScrolled(window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const navItems = [
-    { id: 'discover', label: 'Discover' },
-    { id: 'seasonal', label: 'Seasonal' },
-    { id: 'lists', label: 'Lists' },
+    { id: 'discover',  label: 'Discover'  },
+    { id: 'seasonal',  label: 'Seasonal'  },
+    { id: 'lists',     label: 'Lists'     },
     { id: 'community', label: 'Community' },
   ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
         isScrolled
-          ? 'bg-[#07070A]/90 backdrop-blur-md border-b border-white/5'
+          ? 'bg-[var(--bg-secondary)]/90 backdrop-blur-md border-b border-[var(--border)]'
           : 'bg-transparent'
       }`}
     >
-      <div className="flex items-center justify-between px-[7vw] py-4">
+      <div className="flex items-center justify-between px-[6vw] py-4">
+
         {/* Logo */}
         <button
           onClick={() => onNavigate('hero')}
           className="flex items-center gap-2 group"
         >
-          <span className="text-2xl font-bold font-['Sora'] tracking-tight text-white group-hover:text-[#7B61FF] transition-colors">
+          <div className="w-7 h-7 rounded-lg bg-[var(--accent)] flex items-center justify-center">
+            <span className="text-white font-bold text-sm font-['Sora']">A</span>
+          </div>
+          <span className="text-lg font-bold font-['Sora'] tracking-tight text-[var(--text-primary)] group-hover:text-[var(--accent)] transition-colors">
             AnimeVerse
           </span>
         </button>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-1">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => onNavigate(item.id)}
-              className={`accent-text transition-colors ${
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 currentSection === item.id
-                  ? 'text-[#7B61FF]'
-                  : 'text-[#A7ACB8] hover:text-white'
+                  ? 'bg-[var(--accent-subtle)] text-[var(--accent)]'
+                  : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
               }`}
             >
               {item.label}
@@ -64,51 +82,64 @@ export const Header = ({ onNavigate, currentSection }: HeaderProps) => {
         </nav>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
-          <button className="p-2 rounded-full hover:bg-white/5 transition-colors">
-            <Search className="w-5 h-5 text-[#A7ACB8]" />
+        <div className="flex items-center gap-2">
+
+          {/* Search */}
+          <button className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all">
+            <Search className="w-4 h-4" />
           </button>
 
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)] transition-all"
+            aria-label="Toggle theme"
+          >
+            {isDark
+              ? <Sun  className="w-4 h-4" />
+              : <Moon className="w-4 h-4" />
+            }
+          </button>
+
+          {/* User / Sign In */}
           {currentUser ? (
-            <button className="flex items-center gap-2 p-1 pr-3 rounded-full bg-white/5 hover:bg-white/10 transition-colors border border-white/10">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#7B61FF] to-[#4ECDC4] flex items-center justify-center text-sm font-bold">
+            <button className="flex items-center gap-2 py-1.5 pl-1.5 pr-3 rounded-full border border-[var(--border-strong)] bg-[var(--bg-secondary)] hover:border-[var(--accent-border)] transition-all">
+              <div className="w-7 h-7 rounded-full bg-[var(--accent)] flex items-center justify-center text-white text-xs font-bold">
                 {currentUser.displayName[0]}
               </div>
-              <span className="text-sm font-medium hidden sm:block">{currentUser.displayName}</span>
+              <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:block">
+                {currentUser.displayName}
+              </span>
             </button>
           ) : (
             <button className="btn-primary hidden sm:flex">Sign In</button>
           )}
 
-          {/* Mobile menu button */}
+          {/* Mobile hamburger */}
           <button
-            className="md:hidden p-2 rounded-full hover:bg-white/5 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg text-[var(--text-secondary)] hover:bg-[var(--bg-tertiary)] transition-all"
+            onClick={() => setMobileMenu(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? (
-              <X className="w-5 h-5 text-[#A7ACB8]" />
-            ) : (
-              <Menu className="w-5 h-5 text-[#A7ACB8]" />
-            )}
+            {isMobileMenuOpen
+              ? <X    className="w-4 h-4" />
+              : <Menu className="w-4 h-4" />
+            }
           </button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-[#07070A]/95 backdrop-blur-md border-b border-white/5 py-4">
-          <nav className="flex flex-col gap-2 px-[7vw]">
+        <div className="md:hidden absolute top-full left-0 right-0 bg-[var(--bg-secondary)] border-b border-[var(--border)] shadow-lg py-3">
+          <nav className="flex flex-col gap-1 px-[6vw]">
             {navItems.map((item) => (
               <button
                 key={item.id}
-                onClick={() => {
-                  onNavigate(item.id);
-                  setIsMobileMenuOpen(false);
-                }}
-                className={`accent-text py-3 text-left transition-colors ${
+                onClick={() => { onNavigate(item.id); setMobileMenu(false); }}
+                className={`py-2.5 px-3 rounded-lg text-sm font-medium text-left transition-all ${
                   currentSection === item.id
-                    ? 'text-[#7B61FF]'
-                    : 'text-[#A7ACB8] hover:text-white'
+                    ? 'bg-[var(--accent-subtle)] text-[var(--accent)]'
+                    : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-tertiary)]'
                 }`}
               >
                 {item.label}
