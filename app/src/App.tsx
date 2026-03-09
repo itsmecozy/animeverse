@@ -9,6 +9,7 @@ import { ListsPage }      from '@/pages/ListsPage';
 import { CommunityPage }  from '@/pages/CommunityPage';
 import { ChallengesPage } from '@/pages/ChallengesPage';
 import { StatsPage }      from '@/pages/StatsPage';
+import { AnimePage }      from '@/pages/AnimePage';
 
 function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/community"  element={<CommunityPage />}  />
           <Route path="/challenges" element={<ChallengesPage />} />
           <Route path="/stats"      element={<StatsPage />}      />
+          <Route path="/anime/:id"  element={<AnimePage />}      />
         </Routes>
       </Layout>
     </BrowserRouter>
