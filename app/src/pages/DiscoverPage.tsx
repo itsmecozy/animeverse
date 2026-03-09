@@ -3,7 +3,7 @@ import { Search, SlidersHorizontal, X } from 'lucide-react';
 import { useAniList } from '@/hooks/useAniList';
 import { Spinner, ErrorState } from '@/components/Spinner';
 import { AnimeCard } from '@/components/AnimeCard';
-import { SEARCH_QUERY, getTitle } from '@/lib/anilist';
+import { SEARCH_QUERY } from '@/lib/anilist';
 import type { AniListMedia } from '@/lib/anilist';
 
 interface SearchData {
@@ -34,7 +34,7 @@ export const DiscoverPage = () => {
 
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
   useEffect(() => {
-    clearTimeout(debounceRef.current);
+    clearTimeout(debounceRef.current as ReturnType<typeof setTimeout>);
     debounceRef.current = setTimeout(() => setSearch(input), 500);
     return () => clearTimeout(debounceRef.current as ReturnType<typeof setTimeout>);
   }, [input]);
