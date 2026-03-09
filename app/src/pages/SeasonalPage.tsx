@@ -4,10 +4,10 @@ import { useAniList } from '@/hooks/useAniList';
 import { Spinner, ErrorState } from '@/components/Spinner';
 import {
   SEASONAL_QUERY, SCHEDULE_QUERY,
-  AniListMedia, AiringSchedule,
   getTitle, getRating, getStudio,
   getCurrentSeason, getWeekRange, groupByDay,
 } from '@/lib/anilist';
+import type { AniListMedia, AiringSchedule } from '@/lib/anilist';
 
 interface SeasonalData { Page: { media: AniListMedia[] } }
 interface ScheduleData { Page: { airingSchedules: AiringSchedule[] } }

@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import { Search, SlidersHorizontal, X, Star, Plus } from 'lucide-react';
 import { useAniList } from '@/hooks/useAniList';
 import { Spinner, ErrorState } from '@/components/Spinner';
-import { SEARCH_QUERY, AniListMedia, getTitle, getRating } from '@/lib/anilist';
+import { SEARCH_QUERY, getTitle, getRating } from '@/lib/anilist';
+import type { AniListMedia } from '@/lib/anilist';
 
 interface SearchData {
   Page: {
@@ -64,7 +65,7 @@ export const DiscoverPage = () => {
   useEffect(() => {
     clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => setSearch(input), 500);
-    return () => clearTimeout(debounceRef.current);
+    return () => clearTimeout(debounceRef.current as ReturnType<typeof setTimeout>);
   }, [input]);
 
   const variables = {
