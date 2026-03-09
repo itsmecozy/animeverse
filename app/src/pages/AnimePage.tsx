@@ -1,6 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Plus, Star, Play, BookMarked } from 'lucide-react';
-import { useAniList } from '@/hooks/useAniList';
+import { ArrowLeft, Plus, Play, BookMarked } from 'lucide-react';
 import { Spinner, ErrorState } from '@/components/Spinner';
 import { anilistQuery, getTitle, getRating, getStudio } from '@/lib/anilist';
 import type { AniListMedia } from '@/lib/anilist';
