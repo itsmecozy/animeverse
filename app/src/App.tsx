@@ -125,8 +125,6 @@ function App() {
 
   return (
     <div className="relative">
-      {/* Grain Overlay */}
-      <div className="grain-overlay" />
 
       {/* Header */}
       <Header onNavigate={handleNavigate} currentSection={currentSection} />
