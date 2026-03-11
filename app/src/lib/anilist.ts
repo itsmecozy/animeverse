@@ -19,6 +19,7 @@ const MEDIA_FIELDS = `
   coverImage { large extraLarge }
   bannerImage
   averageScore
+  popularity
   episodes
   format
   status
@@ -111,6 +112,7 @@ export interface AniListMedia {
   genres: string[];
   studios: { nodes: { name: string }[] };
   description: string | null;
+  popularity: number | null;
   nextAiringEpisode: { airingAt: number; episode: number } | null;
 }
 
