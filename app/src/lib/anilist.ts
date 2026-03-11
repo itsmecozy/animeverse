@@ -45,7 +45,7 @@ export const TRENDING_QUERY = `
 
 export const FEATURED_QUERY = `
   query Featured {
-    Page(page: 1, perPage: 1) {
+    Page(page: 1, perPage: 5) {
       media(sort: POPULARITY_DESC, type: ANIME, isAdult: false, status: RELEASING) {
         ${MEDIA_FIELDS}
       }
