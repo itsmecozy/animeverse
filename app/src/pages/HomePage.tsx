@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronRight, ChevronLeft, TrendingUp, Eye, Play, Plus, Star, Flame } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Eye, Play, Plus, Star, Flame } from 'lucide-react';
 import { useAniList } from '@/hooks/useAniList';
 import { Spinner, ErrorState } from '@/components/Spinner';
 import { AnimeCard } from '@/components/AnimeCard';
