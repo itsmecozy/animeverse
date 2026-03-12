@@ -16,9 +16,9 @@ function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
       <Sidebar />
       <TopBar />
-      {/* md: offset 208px for fixed w-52 sidebar */}
-      <main className="md:ml-52 pt-14 pb-20 md:pb-6">
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+      {/* md: offset 56px (w-14 icon-only), lg: offset 208px (w-52 full) */}
+      <main className="md:ml-14 lg:ml-52 pt-14 pb-20 md:pb-6">
+        <div className="w-full max-w-[1600px] mx-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">
           {children}
         </div>
       </main>
